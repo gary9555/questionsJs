@@ -70,20 +70,82 @@ describe('TodoCtrl', function() {
         });
 
         expect(scope.roomId).toBe("new");
+		//location.path('/0/path');
+		//expect(scope.roomId).toBe("all");
+		
       });
+	  
+	   it('RoomId', function() {
+        location.path('');
+
+        var ctrl = controller('TodoCtrl', {
+          $scope: scope,
+          $location: location
+		  
+        });
+
+        //expect(scope.roomId).toBe("new");
+		//location.path('/0/path');
+		//expect(scope.roomId).toBe("all");
+		
+      });
+	   
 	  
 	 
 	  // Watch Collection
 	  it('$watchCollection',function() {
 		var ctrl = controller('TodoCtrl', {
-          $scope: scope
+          $scope: scope,
+		  $window: window
         });
-	 
+	 	
+		var td1 = {
+			wholeMsg: "shuai",
+			head: "",
+			headLastChar: 'i',
+			desc: "hi",
+		//	linkedDesc: Autolinker.link(desc, {newWindow: false, stripPrefix: false}),
+			completed: false,
+			timestamp: new Date().getTime(),
+			tags: "...",
+			echo: 0,
+			order: 0
+		};
+		
+		var td2 = {
+			wholeMsg: "shuai",
+			head: "shuai",
+			headLastChar: 'i',
+			desc: "hi",
+		//	linkedDesc: Autolinker.link(desc, {newWindow: false, stripPrefix: false}),
+			completed: true,
+			timestamp: new Date().getTime(),
+			tags: "...",
+			echo: 0,
+			order: 0
+		};
+		
+		var td3 = {
+			wholeMsg: "shuai",
+			head: "shuai",
+			headLastChar: 'i',
+			desc: "hi",
+		//	linkedDesc: Autolinker.link(desc, {newWindow: false, stripPrefix: false}),
+			completed: false,
+			timestamp: new Date().getTime(),
+			tags: "...",
+			echo: 0,
+			order: 0
+		};
+		scope.todos=[td1,td2,td3];
+		scope.$digest();
 	 
 	  });
 	  
-	  // add todo 
-	/*  
+	  
+	  
+	  
+	  // add todo   
 	  it('addTodo',function() {
 		var ctrl = controller('TodoCtrl', {
           $scope: scope,
@@ -94,12 +156,14 @@ describe('TodoCtrl', function() {
           $window: window
         });  
 	 	
-		scope.input.wholeMsg = "shuai";
+		scope.input={wholeMsg:"shuai"};
 		
 	 	scope.addTodo();
+		scope.input.wholeMsg="";
+		scope.addTodo();
 		
 	  });
-	 */
+	 
 	  
 	  // edit todo
 	  it('editTodo',function() {
@@ -213,8 +277,35 @@ describe('TodoCtrl', function() {
 	 	//expect(scope.editedTodo).toBe(input);
 	
 	  });
+	  
+	  it('FBLogin', function() {
 
+        var ctrl = controller('TodoCtrl', {
+          $scope: scope,
+          $location: location,
+          $firebaseArray: firebaseArray,
+          $sce: sce,
+          $localStorage: localStorage,
+          $window: window
+        });
 
+        scope.FBLogin();
+     
+      });
+
+	  // increase max
+	  it('increaseMax', function() {
+
+        var ctrl = controller('TodoCtrl', {
+          $scope: scope,
+        });
+		scope.totalCount=5;
+		scope.maxQuestion=1;       
+      	scope.increaseMax();
+		scope.maxQuestion=10; 
+		scope.increaseMax();
+       // expect(window.scrollY).toBe(0);
+      });
 
       it('toTop Testing', function() {
 
@@ -234,7 +325,7 @@ describe('TodoCtrl', function() {
     });
   });
   
-  
+ /* 
 describe('Unit testing directives', function() {
   var $compile,
       $rootScope;
@@ -250,7 +341,16 @@ describe('Unit testing directives', function() {
     $rootScope = _$rootScope_;
   }));
   
-  it('Replaces the element with the appropriate content', function() {
+  it('todoFocus', function() {
+    // Compile a piece of HTML containing the directive
+    var element = $compile("<todo-focus></todo-focus>")($rootScope);
+    // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
+    $rootScope.$digest();
+    // Check that the compiled element contains the templated content
+    expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
+  });
+  
+  it('todoBlur', function() {
     // Compile a piece of HTML containing the directive
     var element = $compile("<a-great-eye></a-great-eye>")($rootScope);
     // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
@@ -258,4 +358,16 @@ describe('Unit testing directives', function() {
     // Check that the compiled element contains the templated content
     expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
   });
+  
+  it('todoEscape', function() {
+    // Compile a piece of HTML containing the directive
+    var element = $compile("<a-great-eye></a-great-eye>")($rootScope);
+    // fire all the watches, so the scope expression {{1 + 1}} will be evaluated
+    $rootScope.$digest();
+    // Check that the compiled element contains the templated content
+    expect(element.html()).toContain("lidless, wreathed in flame, 2 times");
+  });
+  
+  
 });
+*/
