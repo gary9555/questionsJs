@@ -47,12 +47,15 @@ describe('TodoCtrl', function() {
         });
 
         var testInputs = [
-          {str:"Hello? This is Sung", exp: "Hello?"},
-          {str:"Hello.co? This is Sung", exp: "Hello.co?"},
-          {str:"Hello.co This is Sung", exp: "Hello.co This is Sung"},
-          {str:"Hello.co \nThis is Sung", exp: "Hello.co \n"},
-		  {str:"Hello.co! This! is! Sung", exp: "Hello.co!"},
-          {str:"Hello?? This is Sung", exp: "Hello??"},
+          {str:"Hello? This is Sung", exp: "Hello?"},    // 1
+          {str:"Hello.co? This is Sung", exp: "Hello.co?"},  //1
+          {str:"Hello.co This is Sung", exp: "Hello.co This is Sung"}, //without
+          {str:"Hello.co \nThis is Sung", exp: "Hello.co \n"},  //    1 
+		  {str:"Hello.co! This! is! Sung", exp: "Hello.co!"},  // 3
+          {str:"Hello?? This is Sung", exp: "Hello??"},       //  1
+		  {str:"Hi! My name is Gary! I'm a student.", exp: "Hi!"},
+		  {str:"Hi! ! My name is Gary! I'm a student.", exp: "Hi!"},
+		  {str:"Hi! ? My name is Gary. I'm a student\n", exp: "Hi!"}
         ];
 
         for (var i in testInputs) {
@@ -70,25 +73,13 @@ describe('TodoCtrl', function() {
         });
 
         expect(scope.roomId).toBe("new");
+		location.path('');todomvc.controller();
 		//location.path('/0/path');
 		//expect(scope.roomId).toBe("all");
 		
       });
+	 
 	  
-	   it('RoomId', function() {
-        location.path('');
-
-        var ctrl = controller('TodoCtrl', {
-          $scope: scope,
-          $location: location
-		  
-        });
-
-        //expect(scope.roomId).toBe("new");
-		//location.path('/0/path');
-		//expect(scope.roomId).toBe("all");
-		
-      });
 	   
 	  
 	 
@@ -137,7 +128,9 @@ describe('TodoCtrl', function() {
 			echo: 0,
 			order: 0
 		};
-		scope.todos=[td1,td2,td3];
+		
+		var td4={};
+		scope.todos=[td1,td2,td3,td4];
 		scope.$digest();
 	 
 	  });
@@ -156,10 +149,9 @@ describe('TodoCtrl', function() {
           $window: window
         });  
 	 	
-		scope.input={wholeMsg:"shuai"};
-		
+		scope.input={wholeMsg:"shuai"};	
 	 	scope.addTodo();
-		scope.input.wholeMsg="";
+		scope.input={wholeMsg:''};
 		scope.addTodo();
 		
 	  });
@@ -223,7 +215,7 @@ describe('TodoCtrl', function() {
 			order: 0
 		};
 		var td2 = {
-			wholeMsg: "",
+			wholeMsg: '',
 			head: "shuai",
 			headLastChar: 'i',
 			desc: "hi",
@@ -247,7 +239,7 @@ describe('TodoCtrl', function() {
           $scope: scope
         });  
 		
-		var td1 = {
+		scope.todos[0] = {
 			wholeMsg: "shuai",
 			head: "shuai",
 			headLastChar: 'i',
@@ -258,7 +250,7 @@ describe('TodoCtrl', function() {
 			echo: 0,
 			order: 0
 		};
-		var td2 = {
+		scope.todos[1] = {
 			wholeMsg: "",
 			head: "shuai",
 			headLastChar: 'i',
@@ -269,6 +261,8 @@ describe('TodoCtrl', function() {
 			echo: 0,
 			order: 0
 		};
+		
+		
 		
 		
 	 	scope.clearCompletedTodos();
@@ -306,8 +300,23 @@ describe('TodoCtrl', function() {
 		scope.increaseMax();
        // expect(window.scrollY).toBe(0);
       });
-
-      it('toTop Testing', function() {
+	 it('location path', function() {
+		location.path('');
+		
+		var ctrl = controller('TodoCtrl', {
+		  $scope: scope,
+		  $location: location
+		  
+		});
+		
+		//expect(scope.roomId).toBe("new");
+		//location.path('/0/path');
+		//expect(scope.roomId).toBe("all");
+			
+	});
+      
+	  
+	  it('toTop Testing', function() {
 
         var ctrl = controller('TodoCtrl', {
           $scope: scope,
